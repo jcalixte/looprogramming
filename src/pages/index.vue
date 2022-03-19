@@ -1,58 +1,30 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user'
-
-const user = useUserStore()
-const name = ref(user.savedName)
+import { generateUUID } from '~/providers/uuid'
 
 const router = useRouter()
-const go = () => {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
 
 const { t } = useI18n()
+
+const createTask = () => {
+  router.push(`/tasks/${generateUUID()}`)
+}
 </script>
 
 <template>
   <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <input
-      id="input"
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      :aria-label="t('intro.whats-your-name')"
-      type="text"
-      autocomplete="false"
-      p="x4 y2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-      @keydown.enter="go"
-    >
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
+    <h1 text-4xl>
+      Looprogramming
+    </h1>
+    <h2 text-1xl italic>
+      Your coding feedback loop
+    </h2>
 
     <div>
       <button
-        btn m-3 text-sm
-        :disabled="!name"
-        @click="go"
+        btn m-3
+        @click="createTask"
       >
-        {{ t('button.go') }}
+        {{ t('tasks.createATask') }}
       </button>
     </div>
   </div>

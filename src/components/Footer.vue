@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toggleDark } from '~/composables'
+import { toggleDark } from '~/composables/dark'
 
 const { t, availableLocales, locale } = useI18n()
 
@@ -11,7 +11,7 @@ const toggleLocales = () => {
 </script>
 
 <template>
-  <nav text-xl mt-6>
+  <nav text-xl>
     <router-link class="icon-btn mx-2" to="/" :title="t('button.home')">
       <div i-carbon-campsite />
     </router-link>

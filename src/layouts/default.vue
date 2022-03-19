@@ -1,9 +1,18 @@
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200">
+  <main
+    flex
+    flex-col
+    items-center
+    justify-between
+    h-screen
+    w-screen
+    text-center
+    text-gray-700
+    dark:text-gray-200
+    px-4
+    py-8
+  >
     <router-view />
     <Footer />
-    <div class="mt-5 mx-auto text-center opacity-25 text-sm">
-      [Default Layout]
-    </div>
   </main>
 </template>
