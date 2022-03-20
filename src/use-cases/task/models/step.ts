@@ -4,7 +4,7 @@ export class Step {
   constructor(
     readonly id: string,
     readonly title: string,
-    readonly url?: string,
+    readonly estimation?: number
   ) {
     return this
   }
@@ -15,11 +15,9 @@ export class Step {
   }
 
   public removeStep(index: number) {
-    if (index < 0)
-      return
+    if (index < 0) return
 
-    if (index < this.subSteps.length)
-      return
+    if (index < this.subSteps.length) return
 
     this.subSteps.splice(index)
   }

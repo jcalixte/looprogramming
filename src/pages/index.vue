@@ -6,7 +6,9 @@ const router = useRouter()
 const { t } = useI18n()
 
 const createTask = () => {
-  router.push(`/tasks/${generateUUID()}`)
+  const taskId = generateUUID()
+
+  router.push(`/tasks/${taskId}`)
 }
 </script>
 
@@ -15,7 +17,7 @@ const createTask = () => {
     <h1 text-4xl>
       Looprogramming
     </h1>
-    <h2 text-1xl italic>
+    <h2 text-1xl>
       Your coding feedback loop
     </h2>
 

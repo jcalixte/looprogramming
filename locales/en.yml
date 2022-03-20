@@ -12,6 +12,9 @@ intro:
   hi: Hi, {name}!
   whats-your-name: What's your name?
 not-found: Not found
+task:
+  title: title
+  url: URL
 tasks:
   createATask: Create a task
   newTask: New task
