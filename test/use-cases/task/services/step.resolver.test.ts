@@ -12,11 +12,9 @@ import {
   thirdStep
 } from "_/use-cases/task/services/markdown.data"
 import { Step } from "~/use-cases/task/models/step"
-import { StepResolver } from "~/use-cases/task/services/step.resolver"
+import { stepResolver } from "~/use-cases/task/services/step.resolver"
 
 describe("Step resolver", () => {
-  const stepResolver = new StepResolver()
-
   describe("from markdown", () => {
     it("returns an empty array when there is no given input", () => {
       expect(stepResolver.fromMarkdown("")).toEqual([])

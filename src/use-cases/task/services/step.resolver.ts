@@ -9,7 +9,7 @@ class Node {
     const [first, ...rest] = line.split("|")
     const second = rest.join("|")
 
-    const estimation = parseInt(first.trim(), 10)
+    const estimation = Number(first.trim())
 
     if (isNaN(estimation)) {
       this.title = line
@@ -20,7 +20,7 @@ class Node {
   }
 }
 
-export class StepResolver {
+class StepResolver {
   public fromMarkdown(input: string): Step[] {
     return this.parseToNodes(input).map((node) => this.nodeToStep(node))
   }
@@ -68,3 +68,5 @@ export class StepResolver {
     )
   }
 }
+
+export const stepResolver = new StepResolver()
