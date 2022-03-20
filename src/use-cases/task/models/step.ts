@@ -25,4 +25,11 @@ export class Step {
   public get steps() {
     return this.subSteps
   }
+
+  public get totalEstimation(): number {
+    return this.steps.reduce(
+      (acc, step) => acc + step.totalEstimation,
+      this.estimation ?? 0
+    )
+  }
 }

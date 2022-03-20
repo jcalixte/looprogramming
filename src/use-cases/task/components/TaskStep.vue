@@ -8,7 +8,9 @@ defineProps<{ step: Step }>()
   <div class="task-step">
     <h2>
       {{ step.title }}
-      <span v-if="step.estimation" italic>({{ step.estimation }} minutes)</span>
+      <span v-if="step.estimation" italic
+        >({{ step.totalEstimation }} minutes)</span
+      >
     </h2>
     <div v-for="substep in step.steps" :key="substep.id">
       <task-step ml-8 :step="substep" />
