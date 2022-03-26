@@ -18,3 +18,4 @@ task:
 tasks:
   createATask: Create a task
   newTask: New task
+  toDemoTask: To demo task

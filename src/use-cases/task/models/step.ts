@@ -1,4 +1,6 @@
-export class Step {
+import { Stepable } from "~/use-cases/task/interfaces/Stepable"
+
+export class Step implements Stepable {
   private subSteps: Step[] = []
 
   constructor(
@@ -27,9 +29,9 @@ export class Step {
   }
 
   public get totalEstimation(): number {
-    return this.steps.reduce(
-      (acc, step) => acc + step.totalEstimation,
-      this.estimation ?? 0
+    return (
+      this.estimation ??
+      this.steps.reduce((acc, step) => acc + step.totalEstimation, 0)
     )
   }
 }
