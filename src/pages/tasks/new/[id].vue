@@ -8,9 +8,12 @@ const { t } = useI18n()
 
 const newTask = reactive<Task>(new Task(props.id))
 const markdown = ref("")
+const markdownPlaceholder = `- 10 | first step
+- second step
+  - 10 | sub step 1
+  - 25 | sub step 2
+  - 2 | commit and push`
 const steps = computed(() => stepResolver.fromMarkdown(markdown.value))
-
-const textarea = ref<HTMLTextAreaElement | null>(null)
 </script>
 
 <template>
@@ -26,12 +29,16 @@ const textarea = ref<HTMLTextAreaElement | null>(null)
         <input v-model="newTask.link" type="text" text-gray-700 px2 py1 />
       </div>
       <textarea
-        id="markdown"
         v-model="markdown"
         name="markdown"
+        :placeholder="markdownPlaceholder"
+        class="markdown"
         text-gray-700
         px2
         py1
+        text-lg
+        md:w-full
+        sm:w-auto
       />
       <task-step v-for="step in steps" :key="step.id" :step="step" />
     </form>
@@ -40,5 +47,10 @@ const textarea = ref<HTMLTextAreaElement | null>(null)
 
 <style scoped lang="scss">
 .task {
+  .markdown {
+    max-width: 750px;
+    min-height: 15rem;
+    margin: 1rem;
+  }
 }
 </style>

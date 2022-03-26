@@ -18,7 +18,7 @@ const toDemoTask = () => {
 
 <template>
   <div>
-    <h1 text-4xl>Looprogramming</h1>
+    <h1 text-4xl pt-2>Looprogramming</h1>
     <h2 text-1xl>Your coding feedback loop</h2>
 
     <div>

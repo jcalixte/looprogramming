@@ -14,7 +14,7 @@
     text-2xl
   >
     <app-header />
-    <main flex-1>
+    <main flex-1 w-screen>
       <router-view />
     </main>
   </div>
