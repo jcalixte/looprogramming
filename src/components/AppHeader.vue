@@ -11,7 +11,7 @@ const toggleLocales = () => {
 </script>
 
 <template>
-  <nav text-xl>
+  <nav w-screen>
     <router-link class="icon-btn mx-2" to="/" :title="t('button.home')">
       <div i-carbon-campsite />
     </router-link>
@@ -37,3 +37,11 @@ const toggleLocales = () => {
     </router-link>
   </nav>
 </template>
+
+<style lang="scss">
+nav {
+  display: flex;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+</style>
