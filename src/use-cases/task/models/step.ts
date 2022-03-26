@@ -11,8 +11,8 @@ export class Step implements Stepable {
     return this
   }
 
-  public addSteps(...steps: Step[]) {
-    this.subSteps.push(...steps)
+  public addSteps(...steps: Stepable[]) {
+    this.subSteps.push(...Step.fromStepable(...steps))
     return this
   }
 
@@ -32,6 +32,14 @@ export class Step implements Stepable {
     return (
       this.estimation ??
       this.steps.reduce((acc, step) => acc + step.totalEstimation, 0)
+    )
+  }
+
+  public static fromStepable(...stepables: Stepable[]): Step[] {
+    return stepables.map((stepable) =>
+      new Step(stepable.id, stepable.title, stepable.estimation).addSteps(
+        ...Step.fromStepable(...stepable.steps)
+      )
     )
   }
 }
