@@ -1,19 +1,13 @@
 <script setup lang="ts">
+import { useTimer } from "~/hooks/useTimer.hook"
+
 const props = defineProps<{
   limitInSeconds?: number
   start: boolean
 }>()
 
-const SECONDS_IN_A_MINUTE = 60
-
 const counter = ref(0)
-const minutes = computed(() =>
-  `${Math.floor(counter.value / SECONDS_IN_A_MINUTE)}`.padStart(2, "0")
-)
-const seconds = computed(() =>
-  `${counter.value % SECONDS_IN_A_MINUTE}`.padStart(2, "0")
-)
-const displayedCounter = computed(() => `${minutes.value}:${seconds.value}`)
+const { time } = useTimer(counter)
 let intervalId: ReturnType<typeof setTimeout> | null = null
 
 const runCounter = () => {
@@ -57,7 +51,7 @@ const hasTimePassed = computed(() => {
       warning: hasTimePassed
     }"
   >
-    {{ displayedCounter }}
+    {{ time }}
   </div>
 </template>
 
