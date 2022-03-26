@@ -12,14 +12,9 @@ defineProps<{ step: Step }>()
         >({{ step.totalEstimation }} minutes)</span
       >
     </h2>
+    <hr />
     <div v-for="substep in step.steps" :key="substep.id">
       <task-step ml-8 :step="substep" />
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.task-step {
-  border: solid 1px white;
-}
-</style>

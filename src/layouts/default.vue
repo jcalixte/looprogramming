@@ -1,5 +1,5 @@
 <template>
-  <main
+  <div
     flex
     flex-col
     items-center
@@ -10,9 +10,11 @@
     text-gray-700
     dark:text-gray-200
     px-4
-    py-8
+    py-2
   >
-    <router-view />
-    <Footer />
-  </main>
+    <app-header />
+    <main flex-1>
+      <router-view />
+    </main>
+  </div>
 </template>

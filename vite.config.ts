@@ -84,8 +84,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "safari-pinned-tab.svg"],
       manifest: {
-        name: "Vitesse",
-        short_name: "Vitesse",
+        name: "Looprogramming",
+        short_name: "Looprogramming",
         theme_color: "#ffffff",
         icons: [
           {
