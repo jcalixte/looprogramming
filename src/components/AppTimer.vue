@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
-  limit?: number
+  limitInSeconds?: number
   start: boolean
 }>()
 
@@ -41,10 +41,22 @@ watch(
     }
   }
 )
+
+const hasTimePassed = computed(() => {
+  if (props.limitInSeconds === undefined) {
+    return false
+  }
+  return counter.value > props.limitInSeconds
+})
 </script>
 
 <template>
-  <div class="app-timer">
+  <div
+    class="app-timer"
+    :class="{
+      warning: hasTimePassed
+    }"
+  >
     {{ displayedCounter }}
   </div>
 </template>
@@ -52,5 +64,9 @@ watch(
 <style scoped lang="scss">
 .app-timer {
   font-family: "Red Hat Mono", monospace;
+
+  &.warning {
+    color: #c23616;
+  }
 }
 </style>

@@ -12,7 +12,7 @@ const currentStepId = ref(steps[0].id)
 
 <template>
   <div class="task-flow">
-    <app-timer :limit="totalTaskEstimationInSeconds" start />
+    <app-timer :limit-in-seconds="totalTaskEstimationInSeconds" start />
     <run-step
       v-for="step in steps"
       :key="step.id"

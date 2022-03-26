@@ -3,7 +3,7 @@ import { Step } from "~/use-cases/task/models/step"
 
 export const exampleSteps: Stepable[] = [
   new Step("a", "initialize api call")
-    .addSteps(new Step("aa", "setup infra module", 6))
+    .addSteps(new Step("aa", "setup infra module", 0.1))
     .addSteps(new Step("ab", "test hook api", 10))
     .addSteps(new Step("ac", "adjust hook", 10))
     .addSteps(new Step("ad", "commit", 5)),
