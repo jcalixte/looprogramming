@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { generateUUID } from "~/providers/uuid"
+import TaskList from "../use-cases/task/components/TaskList.vue"
 
 const router = useRouter()
 
@@ -29,6 +30,8 @@ const toDemoTask = () => {
         {{ t("tasks.toDemoTask") }}
       </button>
     </div>
+
+    <task-list />
   </div>
 </template>
 

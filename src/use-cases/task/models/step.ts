@@ -1,7 +1,7 @@
 import { Stepable } from "~/use-cases/task/interfaces/Stepable"
 
 export class Step implements Stepable {
-  private subSteps: Step[] = []
+  public steps: Step[] = []
 
   constructor(
     readonly id: string,
@@ -12,20 +12,16 @@ export class Step implements Stepable {
   }
 
   public addSteps(...steps: Stepable[]) {
-    this.subSteps.push(...Step.fromStepable(...steps))
+    this.steps.push(...Step.fromStepable(...steps))
     return this
   }
 
   public removeStep(index: number) {
     if (index < 0) return
 
-    if (index < this.subSteps.length) return
+    if (index < this.steps.length) return
 
-    this.subSteps.splice(index)
-  }
-
-  public get steps() {
-    return this.subSteps
+    this.steps.splice(index)
   }
 
   public get totalEstimation(): number {
@@ -40,6 +36,12 @@ export class Step implements Stepable {
       new Step(stepable.id, stepable.title, stepable.estimation).addSteps(
         ...Step.fromStepable(...stepable.steps)
       )
+    )
+  }
+
+  public static getDeepSteps(steps: Stepable[]): Stepable[] {
+    return steps.flatMap((step) =>
+      step.steps.length > 0 ? Step.getDeepSteps(step.steps) : [step]
     )
   }
 }

@@ -3,14 +3,14 @@ import { Taskable } from "~/use-cases/task/interfaces/Taskable"
 import { Step } from "~/use-cases/task/models/step"
 
 export class Task implements Taskable {
-  private internalSteps: Step[] = []
+  public steps: Step[] = []
   public title = ""
   public link: string | null = null
 
   constructor(public readonly id: string) {}
 
   public addSteps(...steps: Stepable[]) {
-    this.internalSteps.push(...Step.fromStepable(...steps))
+    this.steps.push(...Step.fromStepable(...steps))
     return this
   }
 
@@ -19,16 +19,16 @@ export class Task implements Taskable {
       return this
     }
 
-    if (index < this.internalSteps.length) {
+    if (index < this.steps.length) {
       return this
     }
 
-    this.internalSteps.splice(index)
+    this.steps.splice(index)
     return this
   }
 
-  public get steps() {
-    return this.internalSteps
+  public get flattenSteps() {
+    return this.steps
   }
 
   public static fromTaskable(taskable: Taskable) {
@@ -38,5 +38,9 @@ export class Task implements Taskable {
     task.addSteps(...taskable.steps)
 
     return task
+  }
+
+  public static validate(task: Taskable) {
+    return !!task.id && !!task.title && task.steps.length > 0
   }
 }

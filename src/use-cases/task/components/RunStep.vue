@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { Stepable } from "~/use-cases/task/interfaces/Stepable"
+import { useTaskStore } from "~/use-cases/task/stores/task.store"
 
-const props = defineProps<{ step: Stepable; currentStepId: string | null }>()
-const isRunning = computed(() => props.step.id === props.currentStepId)
+const taskStore = useTaskStore()
 
-const currentSubstepId = ref<string | null>(
-  isRunning.value ? props.step.steps[0]?.id ?? null : null
+const props = defineProps<{
+  taskId: string
+  step: Stepable
+}>()
+
+const isRunning = computed(
+  () =>
+    taskStore.getResultByTaskId(props.taskId)?.currentStepId === props.step.id
 )
 </script>
 
@@ -14,16 +20,17 @@ const currentSubstepId = ref<string | null>(
     <div flex justify-between gap-xl>
       <span>- {{ step.title }}</span>
       <app-timer
+        v-if="props.step.steps.length === 0"
         :limit-in-seconds="step.totalEstimation * 60"
-        :start="currentStepId === step.id"
+        :start="isRunning"
       />
     </div>
 
     <run-step
       v-for="subStep in step.steps"
       :key="step.id"
+      :task-id="props.taskId"
       :step="subStep"
-      :current-step-id="currentSubstepId ?? currentStepId"
       ml-4xl
     />
   </div>
