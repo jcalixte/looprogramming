@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { Taskable } from "~/use-cases/task/interfaces/Taskable"
 import { useStorage } from "@vueuse/core"
 import { Task } from "~/use-cases/task/models/task"
-import { Result } from "~/use-cases/task/interfaces/Result"
+import { Result, ResultStatus } from "~/use-cases/task/interfaces/Result"
 import { Step } from "~/use-cases/task/models/step"
 
 interface StepParams {
@@ -57,6 +57,7 @@ export const useTaskStore = defineStore(TASK_ID, {
     },
     reset() {
       this.tasks = {}
+      this.results = {}
     },
     start(taskId: string) {
       if (this.results[taskId]) {
@@ -76,7 +77,8 @@ export const useTaskStore = defineStore(TASK_ID, {
         steps: {
           [currentStepId]: 0
         },
-        currentStepId
+        currentStepId,
+        status: ResultStatus.RUN
       }
     },
     nextStep(taskId: string) {
@@ -105,7 +107,8 @@ export const useTaskStore = defineStore(TASK_ID, {
         this.results[taskId] = {
           ...result,
           time: this.getTaskTime(taskId),
-          currentStepId: null
+          currentStepId: null,
+          status: ResultStatus.DEBRIEF
         }
       }
     },
