@@ -31,13 +31,13 @@ export const useTaskStore = defineStore(TASK_ID, {
     allTasks: (state) => Object.values(state.tasks),
     getTaskById: (state) => (taskId: string) =>
       state.tasks[taskId] ? Task.fromTaskable(state.tasks[taskId]) : null,
-    getDeepStepsByTaskId: (state) => (taskId: string) => {
+    getFlattenStepsByTaskId: (state) => (taskId: string) => {
       const task = state.tasks[taskId]
       if (!task) {
         return []
       }
 
-      return Step.getDeepSteps(task.steps)
+      return Step.getFlattenSteps(task.steps)
     },
     getResultByTaskId: (state) => (taskId: string) =>
       state.results[taskId] ?? null,
@@ -63,7 +63,7 @@ export const useTaskStore = defineStore(TASK_ID, {
         return
       }
 
-      const steps = this.getDeepStepsByTaskId(taskId)
+      const steps = this.getFlattenStepsByTaskId(taskId)
       const currentStepId = steps[0]?.id
 
       if (!currentStepId) {
@@ -86,19 +86,27 @@ export const useTaskStore = defineStore(TASK_ID, {
         return
       }
 
-      const steps = this.getDeepStepsByTaskId(taskId)
+      const steps = this.getFlattenStepsByTaskId(taskId)
       const currentStepIndex = steps.findIndex(
         (step) => step.id === result.currentStepId
       )
       const nextStep = steps[currentStepIndex + 1]
 
-      this.results[taskId] = {
-        ...result,
-        steps: {
-          ...result.steps,
-          [nextStep.id]: 0
-        },
-        currentStepId: nextStep.id
+      if (nextStep) {
+        this.results[taskId] = {
+          ...result,
+          steps: {
+            ...result.steps,
+            [nextStep.id]: 0
+          },
+          currentStepId: nextStep.id
+        }
+      } else {
+        this.results[taskId] = {
+          ...result,
+          time: this.getTaskTime(taskId),
+          currentStepId: null
+        }
       }
     },
     updateStepTime({ taskId, stepId, time }: StepParams & { time: number }) {

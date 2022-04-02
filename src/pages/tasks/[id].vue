@@ -7,6 +7,11 @@ const props = defineProps<{ id: string }>()
 const taskStore = useTaskStore()
 const task = taskStore.getTaskById(props.id)
 const taskTime = computed(() => taskStore.getTaskTime(props.id))
+const flattenSteps = computed(() => taskStore.getFlattenStepsByTaskId(props.id))
+const isLastStep = computed(() => {
+  const lastStep = flattenSteps.value[flattenSteps.value.length - 1]
+  return taskStore.getResultByTaskId(props.id)?.currentStepId === lastStep.id
+})
 
 enum Status {
   RUN,
@@ -46,8 +51,8 @@ onMounted(() => {
         :step="step"
       />
       <div class="actions">
-        <button btn @click="nextStep">Next</button>
-        <button btn @click="finish">Finish</button>
+        <button v-if="isLastStep" btn @click="finish">Finish</button>
+        <button v-else btn @click="nextStep">Next</button>
       </div>
     </div>
     <div v-if="taskStatus === Status.DEBRIEF">

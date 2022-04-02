@@ -39,9 +39,9 @@ export class Step implements Stepable {
     )
   }
 
-  public static getDeepSteps(steps: Stepable[]): Stepable[] {
+  public static getFlattenSteps(steps: Stepable[]): Stepable[] {
     return steps.flatMap((step) =>
-      step.steps.length > 0 ? Step.getDeepSteps(step.steps) : [step]
+      step.steps.length > 0 ? Step.getFlattenSteps(step.steps) : [step]
     )
   }
 }
