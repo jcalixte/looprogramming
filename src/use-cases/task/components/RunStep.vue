@@ -13,6 +13,19 @@ const isRunning = computed(
   () =>
     taskStore.getResultByTaskId(props.taskId)?.currentStepId === props.step.id
 )
+
+const stepTime = taskStore.getStepTime({
+  taskId: props.taskId,
+  stepId: props.step.id
+})
+
+const updateStepTime = (time: number) => {
+  taskStore.updateStepTime({
+    taskId: props.taskId,
+    stepId: props.step.id,
+    time
+  })
+}
 </script>
 
 <template>
@@ -23,6 +36,8 @@ const isRunning = computed(
         v-if="props.step.steps.length === 0"
         :limit-in-seconds="step.totalEstimation * 60"
         :start="isRunning"
+        :initial-value="stepTime"
+        :on-time-change="updateStepTime"
       />
     </div>
 

@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./components/AppHeader.vue')['default']
     AppTimer: typeof import('./components/AppTimer.vue')['default']
+    AppTimerDisplay: typeof import('./components/AppTimerDisplay.vue')['default']
     README: typeof import('./components/README.md')['default']
   }
 }

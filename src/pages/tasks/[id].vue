@@ -6,6 +6,7 @@ const props = defineProps<{ id: string }>()
 
 const taskStore = useTaskStore()
 const task = taskStore.getTaskById(props.id)
+const taskTime = computed(() => taskStore.getTaskTime(props.id))
 
 enum Status {
   RUN,
@@ -20,6 +21,7 @@ const totalTaskEstimationInSeconds = computed(() =>
 
 const taskStatus = ref(Status.RUN)
 
+const nextStep = () => taskStore.nextStep(props.id)
 const finish = () => (taskStatus.value = Status.DEBRIEF)
 
 onMounted(() => {
@@ -32,9 +34,9 @@ onMounted(() => {
 <template>
   <div class="task-flow" v-if="task">
     <h1>{{ task.title }}</h1>
-    <app-timer
+    <app-timer-display
       :limit-in-seconds="totalTaskEstimationInSeconds"
-      :start="taskStatus !== Status.DEBRIEF"
+      :display-value="taskTime"
     />
     <div v-if="taskStatus === Status.RUN">
       <run-step
@@ -43,7 +45,10 @@ onMounted(() => {
         :task-id="props.id"
         :step="step"
       />
-      <button btn @click="finish">Finish</button>
+      <div class="actions">
+        <button btn @click="nextStep">Next</button>
+        <button btn @click="finish">Finish</button>
+      </div>
     </div>
     <div v-if="taskStatus === Status.DEBRIEF">
       <h2 text-4xl>Well done!</h2>
@@ -54,5 +59,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .task-flow {
+  .actions {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 </style>

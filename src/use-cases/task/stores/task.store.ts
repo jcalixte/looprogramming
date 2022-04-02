@@ -5,6 +5,11 @@ import { Task } from "~/use-cases/task/models/task"
 import { Result } from "~/use-cases/task/interfaces/Result"
 import { Step } from "~/use-cases/task/models/step"
 
+interface StepParams {
+  taskId: string
+  stepId: string
+}
+
 interface State {
   tasks: Record<string, Taskable>
   results: Record<string, Result>
@@ -17,18 +22,34 @@ const initialState: State = {
 
 const TASK_ID = "task"
 
+const sum = (elements: number[]) =>
+  elements.reduce((acc, next) => acc + next, 0)
+
 export const useTaskStore = defineStore(TASK_ID, {
   state: () => useStorage(TASK_ID, initialState),
   getters: {
     allTasks: (state) => Object.values(state.tasks),
     getTaskById: (state) => (taskId: string) =>
       state.tasks[taskId] ? Task.fromTaskable(state.tasks[taskId]) : null,
+    getDeepStepsByTaskId: (state) => (taskId: string) => {
+      const task = state.tasks[taskId]
+      if (!task) {
+        return []
+      }
+
+      return Step.getDeepSteps(task.steps)
+    },
     getResultByTaskId: (state) => (taskId: string) =>
-      state.results[taskId] ?? null
+      state.results[taskId] ?? null,
+    getTaskTime: (state) => (taskId: string) =>
+      sum(Object.values(state.results[taskId]?.steps ?? [])),
+    getStepTime:
+      (state) =>
+      ({ taskId, stepId }: StepParams) =>
+        state.results[taskId]?.steps[stepId] ?? null
   },
   actions: {
     createTask(task: Taskable) {
-      console.log(task)
       this.tasks[task.id] = task
     },
     removeTask(taskId: string) {
@@ -41,12 +62,8 @@ export const useTaskStore = defineStore(TASK_ID, {
       if (this.results[taskId]) {
         return
       }
-      const task = this.tasks[taskId]
-      if (!task) {
-        return
-      }
 
-      const steps = Step.getDeepSteps(task.steps)
+      const steps = this.getDeepStepsByTaskId(taskId)
       const currentStepId = steps[0]?.id
 
       if (!currentStepId) {
@@ -60,6 +77,43 @@ export const useTaskStore = defineStore(TASK_ID, {
           [currentStepId]: 0
         },
         currentStepId
+      }
+    },
+    nextStep(taskId: string) {
+      const result = this.results[taskId]
+      if (!result) {
+        this.start(taskId)
+        return
+      }
+
+      const steps = this.getDeepStepsByTaskId(taskId)
+      const currentStepIndex = steps.findIndex(
+        (step) => step.id === result.currentStepId
+      )
+      const nextStep = steps[currentStepIndex + 1]
+
+      this.results[taskId] = {
+        ...result,
+        steps: {
+          ...result.steps,
+          [nextStep.id]: 0
+        },
+        currentStepId: nextStep.id
+      }
+    },
+    updateStepTime({ taskId, stepId, time }: StepParams & { time: number }) {
+      const result = this.results[taskId]
+
+      if (!result) {
+        return
+      }
+
+      this.results[taskId] = {
+        ...result,
+        steps: {
+          ...result.steps,
+          [stepId]: time
+        }
       }
     }
   }

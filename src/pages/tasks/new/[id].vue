@@ -24,8 +24,6 @@ const canSubmit = computed(() =>
 )
 
 const createTask = () => {
-  console.log("creating task")
-
   taskStore.createTask({
     id: newTask.id,
     title: newTask.title,

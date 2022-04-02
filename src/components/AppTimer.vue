@@ -3,10 +3,12 @@ import { useTimer } from "~/hooks/useTimer.hook"
 
 const props = defineProps<{
   limitInSeconds?: number
+  initialValue?: number
   start: boolean
+  onTimeChange?: (time: number) => void
 }>()
 
-const counter = ref(0)
+const counter = ref(props.initialValue ?? 0)
 const { time } = useTimer(counter)
 let intervalId: ReturnType<typeof setTimeout> | null = null
 
@@ -35,6 +37,10 @@ watch(
     }
   }
 )
+
+watch(counter, (value) => {
+  props.onTimeChange?.(value)
+})
 
 const hasTimePassed = computed(() => {
   if (props.limitInSeconds === undefined) {
