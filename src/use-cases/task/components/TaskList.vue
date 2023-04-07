@@ -9,7 +9,9 @@ const taskStore = useTaskStore()
     <h2>Liste des tâches</h2>
     <ul>
       <li v-for="task in taskStore.tasks" :key="task.id">
-        <a shadow-sm :href="`/tasks/${task.id}`">{{ task.title }}</a>
+        <router-link shadow-sm :to="`/tasks/${task.id}`">{{
+          task.title
+        }}</router-link>
       </li>
     </ul>
     <button btn @click="taskStore.reset()">clear tasks</button>
